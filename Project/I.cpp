@@ -89,14 +89,3 @@ int main() {
 
     return 0;
 }
-
-int printTime_main() {
-    int N;
-    cin >> N;
-    for (int i{ 0 }; i < N; ++i) {
-        int h, m, s;
-        cin >> h >> m >> s;
-        printTime(h, m, s);
-    }
-    return 0;
-}
