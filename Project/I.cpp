@@ -1,14 +1,17 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <iomanip>
 #include <string>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace std;
 
-//---------------------------------------------------------------- первая задачка
+//---------------------------------------------------------------- first task
 void printTime(int h, int m, int s) {
-    //-----------------  проверка валидности времени
+    //-----------------  ГЇГ°Г®ГўГҐГ°ГЄГ  ГўГ Г«ГЁГ¤Г­Г®Г±ГІГЁ ГўГ°ГҐГ¬ГҐГ­ГЁ
     if (h >= 0 && h < 24 && m >= 0 && m < 60 && s >= 0 && s < 60) {
-        int temp[] { h, m, s };
+        int temp[]{ h, m, s };
         for (int i{ 0 }; i < 3; ++i) {
             cout << setw(2) << setfill('0') << temp[i];
             if (i < 2) {
@@ -21,9 +24,8 @@ void printTime(int h, int m, int s) {
     }
 }
 
-
-//---------------------------------------------------------------- вторая задачка
-int cnt_digits(int num) { return (num /= 10) ? 1 + cnt_digits(num) : 1; }//количество цифр в числе
+//---------------------------------------------------------------- second task
+int cnt_digits(int num) { return (num /= 10) ? 1 + cnt_digits(num) : 1; }//cifr v chisle
 int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
     int* time[]{ oHours, oMinutes, oSeconds, };
     int len{ int(strlen(iStr)) }, i{ 0 }, i_time{ 0 };
@@ -34,10 +36,10 @@ int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
             {
                 i++;
             }
-            *time[i_time] = stoi(iStr + i);//записали число
+            *time[i_time] = stoi(iStr + i);//Г§Г ГЇГЁГ±Г Г«ГЁ Г·ГЁГ±Г«Г®
             //cout << *time[i_time] << " ";
-            i += cnt_digits(*time[i_time]);//переместили "курсор" чтения
-            //-----------------  проверка валидности времени
+            i += cnt_digits(*time[i_time]);//ГЇГҐГ°ГҐГ¬ГҐГ±ГІГЁГ«ГЁ "ГЄГіГ°Г±Г®Г°" Г·ГІГҐГ­ГЁГї
+            //-----------------  ГЇГ°Г®ГўГҐГ°ГЄГ  ГўГ Г«ГЁГ¤Г­Г®Г±ГІГЁ ГўГ°ГҐГ¬ГҐГ­ГЁ
             if (i_time == 0) {
                 if (*time[i_time] < 0 || *time[i_time] > 23) {
                     is_valid = false;
@@ -50,8 +52,8 @@ int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
                     break;
                 }
             }
-            i_time++; //перемещаем запись в следующую ячейку времени
-            //----------------- проверка следующего указателя
+            i_time++; //ГЇГҐГ°ГҐГ¬ГҐГ№Г ГҐГ¬ Г§Г ГЇГЁГ±Гј Гў Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ ГїГ·ГҐГ©ГЄГі ГўГ°ГҐГ¬ГҐГ­ГЁ
+            //----------------- ГЇГ°Г®ГўГҐГ°ГЄГ  Г±Г«ГҐГ¤ГіГѕГ№ГҐГЈГ® ГіГЄГ Г§Г ГІГҐГ«Гї
             if (i_time < 2) {
                 if (time[i_time] == nullptr) {
                     break;
@@ -59,29 +61,29 @@ int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
             }
         }
         else {
-            //-----------------  проверяем валидность строки 
+            //-----------------  ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ Г«ГЁГ¤Г­Г®Г±ГІГј Г±ГІГ°Г®ГЄГЁ 
             if (iStr[i] != ':') {
                 is_valid = false;
                 break;
             }
-            i++;//переместили "курсор" чтения
+            i++;//ГЇГҐГ°ГҐГ¬ГҐГ±ГІГЁГ«ГЁ "ГЄГіГ°Г±Г®Г°" Г·ГІГҐГ­ГЁГї
         }
     }
-    if (!is_valid) for (int j{ 0 }; j < 3; ++j) *time[j] = -1; //обнуление данных при невалидности
+    if (!is_valid) for (int j{ 0 }; j < 3; ++j) *time[j] = -1; //Г®ГЎГ­ГіГ«ГҐГ­ГЁГҐ Г¤Г Г­Г­Г»Гµ ГЇГ°ГЁ Г­ГҐГўГ Г«ГЁГ¤Г­Г®Г±ГІГЁ
     return int(is_valid);
 }
 void print_read_time(char* iStr) {
-    int h{0}, m{0}, s{0}; 
+    int h{ 0 }, m{ 0 }, s{ 0 };
     int status{ readTime(iStr, &h, &m, &s) };
     int tmp[]{ h, m, s };
-    for (int i{3}; i > 0; --i) {
+    for (int i{ 3 }; i > 0; --i) {
         cout << status << " ";
         for (int j{ 0 }; j < i; ++j) cout << tmp[j] << ' ';
         cout << endl;
     }
 }
 
-//---------------------------------------------------------------- третья задачка
+//---------------------------------------------------------------- thred task
 struct DateStruct
 {
     int datetime[6];
@@ -92,7 +94,7 @@ struct DateStruct
         cout << endl;
     }
 };
-bool operator>(const DateStruct &a, const  DateStruct &b) {
+bool operator>(const DateStruct& a, const  DateStruct& b) {
     for (int i{ 0 }; i < 6; ++i) {
         if (a.datetime[i] > b.datetime[i]) {
             return true;
@@ -103,9 +105,9 @@ bool operator>(const DateStruct &a, const  DateStruct &b) {
     return false;
 }
 bool operator<(const DateStruct& a, const  DateStruct& b) {
-    for (int i{0}; i < 6; ++i) {
-        if (a.datetime[i] < b.datetime[i]) { 
-            return true; 
+    for (int i{ 0 }; i < 6; ++i) {
+        if (a.datetime[i] < b.datetime[i]) {
+            return true;
         }
         else if (a.datetime[i] != b.datetime[i]) { return false; }
 
@@ -114,19 +116,18 @@ bool operator<(const DateStruct& a, const  DateStruct& b) {
     return false;
 }
 DateStruct min(const DateStruct* arr, int len) {
-    int i_min{0};
+    int i_min{ 0 };
     for (int i{ 1 }; i < len; ++i) {
         if (arr[i] < arr[i_min]) {
-            i_min = i;    
+            i_min = i;
         }
     }
     return arr[i_min];
 }
-
-int main() {
+int main_3ed() {
     int a;
     cin >> a;
-    DateStruct* datestimes{new DateStruct[a]};
+    DateStruct* datestimes{ new DateStruct[a] };
     for (int i{ 0 }; i < a; ++i) {
         for (int j{ 0 }; j < 6; ++j) {
             cin >> datestimes[i].datetime[j];
@@ -136,5 +137,100 @@ int main() {
     min(datestimes, a).print_date();
 
     delete[] datestimes;
+    return 0;
+}
+
+
+//---------------------------------------------------------------- 4ed task
+struct Author {
+    char name[16];
+    int age;
+};
+struct DataAutors {
+    int total{ 0 };
+    int long_name{ 0 };
+    int adults{ 0 };
+    int kids{ 0 };
+    void input(char* name, int age) {
+        total++;
+        if (age >= 18) {
+            adults++;
+        }
+        else if (age < 14) {
+            kids++;
+        }
+
+        if (strlen(name) > 10) {
+            long_name++;
+        }
+    }
+};
+int main_4ed() {
+    int a;
+    cin >> a;
+    DataAutors data;
+    Author* autors{ new Author[a] };
+    for (int i{ 0 }; i < a; ++i) {
+        cin >> autors[i].name;
+        char tmp[5];
+        cin >> tmp;
+        autors[i].age = stoi(tmp);
+        cin >> tmp;
+        data.input(autors[i].name, autors[i].age);
+    }
+
+    cout << "names: total = " << data.total << "\nnames: long = " << data.long_name << "\nages: total = " << data.total << "\nages: adult = " << data.adults << "\nages: kid = " << data.kids << endl;
+
+    return 0;
+}
+
+//---------------------------------------------------------------- 5ed task
+#include <fstream>
+int status_char(char a) {
+    if (isdigit(a)) return 0;
+    int ascii = int(a);
+    if ((ascii >= int('A') && ascii <= int('Z')) || (ascii >= int('Рђ') && ascii <= int('РЇ'))) {
+        return 1;
+    }
+    else if ((ascii >= int('a') && ascii <= int('z')) || (ascii >= int('Р°') && ascii <= int('СЏ'))) {
+        return 2;
+    }
+    return 3;
+}
+
+void print_the_date_of_each_line() {
+    ifstream file("input.txt");
+    char str[101];
+    int num{ 0 };
+    do {
+        num++;
+        file.getline(str, 101);
+        if (file.eof()) break;
+
+        int len{ int(strlen(str)) };
+        int low{ 0 }, upp{ 0 }, dig{ 0 };
+        for (int i{ 0 }; i < len; ++i) {
+            int status = status_char(str[i]);
+            if (status == 0) {
+                dig++;
+            }
+            else if (status == 1) {
+                upp++;
+            }
+            else if (status == 2) {
+                low++;
+            }
+        }
+
+        cout << "Line " << num << " has " << len << " chars: " << low + upp << " are letters (" << low << " lower, " << upp << " upper), " << dig << " are digits." << endl;
+
+    } while (1);
+}
+
+
+// https://youtu.be/dQw4w9WgXcQ
+int main() {
+    
+    print_the_date_of_each_line();
     return 0;
 }
