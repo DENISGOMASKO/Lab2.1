@@ -227,10 +227,71 @@ void print_the_date_of_each_line() {
     } while (1);
 }
 
+//---------------------------------------------------------------- 6ed task
+void rev(char arr[101], int len)
+{
 
-// https://youtu.be/dQw4w9WgXcQ
-int main() {
-    
-    print_the_date_of_each_line();
+    for (int i = len-1; i >= 0; --i)
+    {
+        cout << arr[i];
+    }
+    cout << endl;
+}
+int main_6ed() {
+    int len;
+    cin >> len;
+    char str[101];
+    for (int i = 0; i < len; i++)
+    {
+        cin >> str;
+        rev(str, int(strlen(str)));
+
+    }
+
+
     return 0;
 }
+
+//---------------------------------------------------------------- 7ed task
+// https://youtu.be/dQw4w9WgXcQ
+
+
+typedef struct Tokens_s {
+    int num; //количество слов в строке
+    char** arr; //массив слов (каждый элемент –- строка, т.е. char*)
+    int word_count{ 0 };
+    
+
+    void add_word(char* w, int len) {
+        word_count++;
+
+        delete[] arr;
+        arr = new char*[word_count];
+        arr[word_count-1] = new char[len];
+        arr[word_count - 1] = w;
+    }
+} Tokens;
+
+void tokensSplit(Tokens* tokens, const char* str, const char* delims) {
+    
+}
+int main() {
+    Tokens t;
+    char a[100];
+    cin >> a;
+
+    t.add_word(a, int(strlen(a)));
+    cout << t.arr[t.word_count - 1];
+    /*t.word_count++;
+
+
+    t.arr = new char* [t.word_count];
+
+
+    t.arr[t.word_count - 1] = new char[int(strlen(a))];
+    t.arr[t.word_count - 1] = a;
+    cout << t.arr[t.word_count - 1];*/
+    return 0;
+}
+
+
