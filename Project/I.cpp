@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <fstream>
+
 using namespace std;
 
 //---------------------------------------------------------------- first task
@@ -25,21 +27,33 @@ void printTime(int h, int m, int s) {
 }
 
 //---------------------------------------------------------------- second task
-int cnt_digits(int num) { return (num /= 10) ? 1 + cnt_digits(num) : 1; }//cifr v chisle
-int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
+int cnt_digits(int num) { return (num /= 10) ? 1 + cnt_digits(num) : 1; }
+
+int readTime(string iStr, int* oHours, int* oMinutes, int* oSeconds) {
+
     int* time[]{ oHours, oMinutes, oSeconds, };
-    int len{ int(strlen(iStr)) }, i{ 0 }, i_time{ 0 };
+
+    int len{ int(iStr.length()) }, i{ 0 }, i_time{ 0 };
+
     bool is_valid{ true };
+
     while (i < len) {
+
         if (isdigit(iStr[i])) {
+
             while (iStr[i] == '0')
             {
                 i++;
             }
-            *time[i_time] = stoi(iStr + i);//çàïèñàëè ÷èñëî
-            //cout << *time[i_time] << " ";
-            i += cnt_digits(*time[i_time]);//ïåðåìåñòèëè "êóðñîð" ÷òåíèÿ
-            //-----------------  ïðîâåðêà âàëèäíîñòè âðåìåíè
+
+            if (i_time > 2) {
+                is_valid = false;
+                break;
+            }
+            *time[i_time] = stoi(&iStr[i]);
+
+            i += cnt_digits(*time[i_time]);
+
             if (i_time == 0) {
                 if (*time[i_time] < 0 || *time[i_time] > 23) {
                     is_valid = false;
@@ -47,13 +61,14 @@ int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
                 }
             }
             else {
+
                 if (*time[i_time] < 0 || *time[i_time] > 59) {
                     is_valid = false;
                     break;
                 }
+
             }
-            i_time++; //ïåðåìåùàåì çàïèñü â ñëåäóþùóþ ÿ÷åéêó âðåìåíè
-            //----------------- ïðîâåðêà ñëåäóþùåãî óêàçàòåëÿ
+            i_time++;
             if (i_time < 2) {
                 if (time[i_time] == nullptr) {
                     break;
@@ -61,18 +76,22 @@ int readTime(char* iStr, int* oHours, int* oMinutes, int* oSeconds) {
             }
         }
         else {
-            //-----------------  ïðîâåðÿåì âàëèäíîñòü ñòðîêè 
+
             if (iStr[i] != ':') {
                 is_valid = false;
                 break;
             }
-            i++;//ïåðåìåñòèëè "êóðñîð" ÷òåíèÿ
+            else if (i != 0 && iStr[i - 1] == ':') {
+                is_valid = false;
+                break;
+            }
+            i++;
         }
     }
-    if (!is_valid) for (int j{ 0 }; j < 3; ++j) *time[j] = -1; //îáíóëåíèå äàííûõ ïðè íåâàëèäíîñòè
+    if (!is_valid) for (int j{ 0 }; j < 3; ++j) *time[j] = -1;
     return int(is_valid);
 }
-void print_read_time(char* iStr) {
+void print_read_time(string iStr) {
     int h{ 0 }, m{ 0 }, s{ 0 };
     int status{ readTime(iStr, &h, &m, &s) };
     int tmp[]{ h, m, s };
@@ -81,6 +100,15 @@ void print_read_time(char* iStr) {
         for (int j{ 0 }; j < i; ++j) cout << tmp[j] << ' ';
         cout << endl;
     }
+}
+
+int main_2ed() {
+    string a;
+    getline(cin, a);
+    print_read_time(a);
+
+
+    return 0;
 }
 
 //---------------------------------------------------------------- thred task
@@ -185,14 +213,14 @@ int main_4ed() {
 }
 
 //---------------------------------------------------------------- 5ed task
-#include <fstream>
+
 int status_char(char a) {
     if (isdigit(a)) return 0;
-    int ascii = int(a);
-    if ((ascii >= int('A') && ascii <= int('Z')) || (ascii >= int('А') && ascii <= int('Я'))) {
+
+    if ((a >= 'A' && a <= 'Z') || (a >= 'А' && a <= 'Я')) {
         return 1;
     }
-    else if ((ascii >= int('a') && ascii <= int('z')) || (ascii >= int('а') && ascii <= int('я'))) {
+    else if ((a >= 'a' && a <= 'z') || (a >= 'а' && a <= 'я')) {
         return 2;
     }
     return 3;
@@ -225,13 +253,14 @@ void print_the_date_of_each_line() {
         cout << "Line " << num << " has " << len << " chars: " << low + upp << " are letters (" << low << " lower, " << upp << " upper), " << dig << " are digits." << endl;
 
     } while (1);
+    file.close();
 }
 
 //---------------------------------------------------------------- 6ed task
 void rev(char arr[101], int len)
 {
 
-    for (int i = len-1; i >= 0; --i)
+    for (int i = len - 1; i >= 0; --i)
     {
         cout << arr[i];
     }
@@ -256,42 +285,177 @@ int main_6ed() {
 // https://youtu.be/dQw4w9WgXcQ
 
 
-typedef struct Tokens_s {
-    int num; //количество слов в строке
-    char** arr; //массив слов (каждый элемент –- строка, т.е. char*)
-    int word_count{ 0 };
-    
 
-    void add_word(char* w, int len) {
-        word_count++;
+int main_7ed() {
+    ifstream file("input.txt");
+    char str[1000001];
+    file.getline(str, 1000001);
+    int tmp{ 0 };
+    bool strick = false;
+    for (int i{ 0 }; str[i] != '\0'; ++i) {
+        if (status_char(str[i]) != 3) {
+            if (!strick) tmp++;
+            strick = true;
 
-        delete[] arr;
-        arr = new char*[word_count];
-        arr[word_count-1] = new char[len];
-        arr[word_count - 1] = w;
+        }
+        else {
+            strick = false;
+        }
     }
-} Tokens;
-
-void tokensSplit(Tokens* tokens, const char* str, const char* delims) {
-    
-}
-int main() {
-    Tokens t;
-    char a[100];
-    cin >> a;
-
-    t.add_word(a, int(strlen(a)));
-    cout << t.arr[t.word_count - 1];
-    /*t.word_count++;
-
-
-    t.arr = new char* [t.word_count];
-
-
-    t.arr[t.word_count - 1] = new char[int(strlen(a))];
-    t.arr[t.word_count - 1] = a;
-    cout << t.arr[t.word_count - 1];*/
+    cout << tmp << endl;
+    strick = false;
+    for (int i{ 0 }; str[i] != '\0'; ++i) {
+        if (status_char(str[i]) != 3) {
+            cout << str[i];
+            strick = false;
+        }
+        else {
+            if (!strick) cout << endl;
+            strick = true;
+        }
+    }
     return 0;
 }
 
+//---------------------------------------------------------------- 8ed task
+string concat(string pref, string suff) {
+    return pref + suff;
+}
 
+
+int main_8ed() {
+    int num{ 0 };
+    string tmp;
+    cin >> num;
+    for (int i = 0; i < num; ++i) {
+        cin >> tmp;
+        cout << tmp;
+    }
+    return 0;
+}
+
+//---------------------------------------------------------------- 9ed task
+class String_storage {
+
+public:
+    string* arr;
+    int id{ 0 };
+
+
+
+    void add_str() {
+        cin >> arr[id];
+        id++;
+    }
+
+    void del_str(int num) {
+        arr[num].clear();
+    }
+
+    string return_str(int num) {
+        return arr[num];
+    }
+
+    int len_str(int num) {
+        char smv;
+        cin >> smv;
+        int l{ 0 }, len{ int(arr[num].length()) };
+        for (int i{ 0 }; i < len; ++i) {
+            if (arr[num][i] == smv) l++;
+        }
+        return l;
+    }
+
+    void update(int len) {
+        arr = new string[len];
+    }
+
+    void UI(int first, int second) {
+
+        switch (first)
+        {
+        case 0:
+            add_str();
+            break;
+        case 1:
+            del_str(second);
+            break;
+        case 2:
+            cout << return_str(second) << endl;
+            break;
+        case 3:
+            cout << len_str(second) << endl;
+            break;
+        default:
+            break;
+        }
+    }
+
+}Ss;
+
+int main_9ed() {
+    int a;
+    cin >> a;
+    String_storage bd;
+    bd.update(a);
+    for (int i = 0; i < a; ++i) {
+        int f, s;
+
+        cin >> f >> s;
+        bd.UI(f, s);
+    }
+
+    return 0;
+}
+
+#define _CRT_SECURE_NO_WARNINGS
+
+
+int main() {
+    unsigned long long input_xor{0};
+    int numer, denom, n;
+    char tmp[8];
+    int i_tmp, factor;
+    bool is_denom;
+    cin >> n;
+    for (int i{ 0 }; i < n; ++i) {
+        //scanf("%d/%d xor %llx", &numer, &denom, &input_xor);
+        cin >> tmp;
+        is_denom = true;
+        factor = 1;
+        numer = 0;
+        denom = 0;
+        for (i_tmp = strlen(tmp)-1; i_tmp >= 0; --i_tmp) {
+            if (tmp[i_tmp] == '/') {
+                is_denom = false;
+                factor = 1;
+            }
+            else if (is_denom) {
+
+                denom += int(tmp[i_tmp] - '0') * factor;
+                factor *= 10;
+            }
+            else {
+                numer += int(tmp[i_tmp] - '0') * factor;
+                factor *= 10;
+            }
+        }
+        cin >> tmp;
+        //delete[] tmp;
+        //cin >> input_xor;
+        scanf("%llx", &input_xor);
+        
+        double val = (double)numer / denom;
+
+        unsigned long long btz;
+        memcpy(&btz, &val, sizeof(val));
+
+        unsigned long long rez { btz  ^ input_xor};
+
+        double xored;
+        memcpy(&xored, &rez, sizeof(rez));
+        printf("%0.15g\n", xored);
+        //printf("%0.15g\n", double(unsigned long long(unsigned long long(double(numer / denom)) ^ input_xor)));
+    }
+    return 0;
+}
