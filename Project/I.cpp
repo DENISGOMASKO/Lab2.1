@@ -411,7 +411,7 @@ int main_9ed() {
 #define _CRT_SECURE_NO_WARNINGS
 
 
-int main() {
+int main_10ed() {
     unsigned long long input_xor{0};
     int numer, denom, n;
     char tmp[8];
@@ -457,5 +457,24 @@ int main() {
         printf("%0.15g\n", xored);
         //printf("%0.15g\n", double(unsigned long long(unsigned long long(double(numer / denom)) ^ input_xor)));
     }
+    return 0;
+}
+
+#include "list.h"
+
+int main() {
+    list arr;
+    for (int i{ 0 }; i < 10; ++i) arr.push_back(i);
+
+    list* p = arr.head_ptr->next;
+    for (; p != nullptr; ) {
+        cout << p->number << " " << p->head << " " << p->head_ptr << " " << p << endl;
+        p = p->next;
+    }
+    for (int i{ 0 }; i < arr.len(); ++i) {
+        cout << arr.element(i) << " ";
+    }
+
+    cout << arr.len();
     return 0;
 }
