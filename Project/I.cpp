@@ -460,8 +460,8 @@ int main_10ed() {
     return 0;
 }
 
-#include "list.h"
 
+/*
 int main() {
     list arr;
     for (int i{ 0 }; i < 10; ++i) arr.push_back(i);
@@ -477,4 +477,4 @@ int main() {
 
     cout << arr.len();
     return 0;
-}
+}*/
